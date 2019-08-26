@@ -1,0 +1,9 @@
+{
+  "name": "verbalcommander",
+  "description": "Verbal Commander",
+  "module": "verbalcommander.js",
+  "single": 1,
+
+  "params": []
+ 
+}
