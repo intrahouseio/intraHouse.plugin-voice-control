@@ -31,7 +31,7 @@ plugin.log(`Verbal Commander has started`);
 plugin.on('error', err => {
   plugin.log('ERROR: ' + util.inspect(err));
 });
-
+/*
 plugin.params
   .get()
   .then(params => {
@@ -45,17 +45,66 @@ plugin.params
   })
   .then(devicelist => {
     if (devicelist && devicelist.length) {
-      vc.formLocationList(devicelist);
+      vc.formLists(devicelist);
       const dups = vc.addFirst(devicelist);
 
       plugin.log('Уникальные команды: ' + vc.getVosmsCommandLen());
       plugin.log('Не уникальные (не включены в словарь): ' + dups.length);
-      plugin.log(util.inspect(dups));
+      if (dups.length) plugin.log(util.inspect(dups));
     }
+    return plugin.get('listfromworkscenes'); // Список сценариев
+  })
+  .then(scenelist => {
+    plugin.log('Интерактивные сценарии: ' + util.inspect(scenelist));
+    vc.addScenes(scenelist);
   })
   .catch(e => {
     plugin.log('ERROR! ' + util.inspect(e));
   });
+*/
+
+plugin.params
+  .get()
+  .then(params => {
+    processParams(params);
+    return loadScenes();
+  })
+  .then(() => {
+    loadDevices();
+  })
+  .catch(e => {
+    plugin.log('ERROR! ' + util.inspect(e));
+  });
+
+function processParams(params) {
+  plugin.params = params;
+  plugin.log('Received PARAMS ' + JSON.stringify(params));
+  vc.setLang(params.lang || 'ru');
+}
+
+function loadScenes() {
+  return new Promise(resolve => {
+    plugin.get('listfromworkscenes').then(scenelist => {
+      plugin.log('Загрузка сценариев: ' + scenelist.length);
+      vc.addScenes(scenelist);
+      resolve();
+    });
+  });
+}
+
+function loadDevices(reload) {
+  return new Promise(resolve => {
+    plugin.get('devicesV4', { cl: 'ActorD,ActorA' }).then(devicelist => {
+      if (reload) vc.delCommands({ devices: 1 });
+      const dups = vc.addDevices(devicelist);
+
+      plugin.log('Уникальные команды: ' + vc.getVosmsCommandLen());
+      plugin.log('Не уникальные (не включены в словарь): ' + dups.length);
+      if (dups.length) plugin.log(util.inspect(dups));
+      resolve();
+    });
+  });
+}
 
 /**
  * Запросы от сервера - обработчик сообщений type:command
@@ -72,13 +121,16 @@ plugin.onCommand(message => {
 
   const result = vc.getActionAndAnswer(message.command);
   if (result && result.scen) {
-
-    // TODO - может быть сценарий!!
-    const arr = result.scen.split('.');
-    if (arr[0] == 'ALL') {
-      plugin.do(result.filter, arr[1]);
+    if (result.scen.indexOf('.') < 0) {
+      // Сценарий
+      plugin.startscene(result.scen);
     } else {
-      plugin.do(arr[0], arr[1]);
+      const arr = result.scen.split('.');
+      if (arr[0] == 'ALL') {
+        plugin.do(result.filter, arr[1]);
+      } else {
+        plugin.do(arr[0], arr[1]);
+      }
     }
 
     message.payload = { reply: result.reply, result: 1 };
@@ -88,8 +140,29 @@ plugin.onCommand(message => {
   plugin.sendResponse(message, 1);
 });
 
-
 /**
  * Подписка на редактирование списков
- *  и перегенерация (добавление, удаление) команд
+ *  и перегенерация команд
  */
+
+// Изменились названия помещений и уровней - полностью перегенерировать все команды
+plugin.places.onUpdate(data => {
+  plugin.log('Places has updated. Rebuild device commands');
+  // Запросить и перегенерировать заново весь список устройств
+  loadDevices(true);
+});
+
+plugin.rooms.onUpdate(data => {
+  plugin.log('Rooms has updated. Rebuild device commands');
+  // Запросить и перегенерировать заново
+  loadDevices(true);
+});
+
+// Изменения в устройстввх - любые (добавление, удаление)
+plugin.onChange('devref',  { cl: 'ActorD,ActorA' }, (data) => {
+  plugin.log('Device has updated.'+util.inspect(data));
+  // plugin.log('Device has updated. Rebuild device commands');
+  // Перегенерировать по одному устройству
+
+  
+});

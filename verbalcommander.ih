@@ -2,5 +2,5 @@
     "id":"verbalcommander",
     "description":"Verbal Commander",
     "cross":true,
-	"version":"0.0.1"
+	"version":"0.0.2"
 }
