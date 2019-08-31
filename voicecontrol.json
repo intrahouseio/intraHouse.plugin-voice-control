@@ -1,0 +1,9 @@
+{
+  "name": "voicecontrol",
+  "description": "Voice Control",
+  "module": "index.js",
+  "single": 1,
+
+  "params": []
+ 
+}

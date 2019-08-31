@@ -1,0 +1,6 @@
+{
+    "id":"voicecontrol",
+    "description":"Voice Control",
+    "cross":true,
+	"version":"0.0.2"
+}
