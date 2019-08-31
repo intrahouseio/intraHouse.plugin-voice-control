@@ -146,13 +146,14 @@ plugin.onCommand(message => {
  */
 
 // Изменились названия помещений и уровней - полностью перегенерировать все команды
-plugin.places.onUpdate(data => {
+// plugin.places.onUpdate(data => {
+plugin.places.onUpdate(() => {
   plugin.log('Places has updated. Rebuild device commands');
   // Запросить и перегенерировать заново весь список устройств
   loadDevices(true);
 });
 
-plugin.rooms.onUpdate(data => {
+plugin.rooms.onUpdate(() => {
   plugin.log('Rooms has updated. Rebuild device commands');
   // Запросить и перегенерировать заново
   loadDevices(true);
@@ -162,7 +163,8 @@ plugin.rooms.onUpdate(data => {
 plugin.onChange('devref',  { cl: 'ActorD,ActorA' }, (data) => {
   plugin.log('Device has updated.'+util.inspect(data));
   // plugin.log('Device has updated. Rebuild device commands');
-  // Перегенерировать по одному устройству
+  // Перегенерировать по одному устройству - или устройтсвам, включенным в массив
+  
 
   
 });
