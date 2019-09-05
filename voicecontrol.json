@@ -4,7 +4,20 @@
   "module": "index.js",
   "single": 1,
 
-  "params": [],
+  "params": [
+    {
+      "name": "gendevcmd",
+      "note": "$gendevcmd",
+      "type": "cb",
+      "val": true
+    },
+    {
+      "name": "gengroupcmd",
+      "note": "$gengroupcmd",
+      "type": "cb",
+      "val": true
+    }
+  ],
 
   "genrules": {
     "ActorD": { "cl": "ActorD" },

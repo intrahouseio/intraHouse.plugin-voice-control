@@ -68,7 +68,10 @@ function loadDevices(reload) {
   return new Promise(resolve => {
     plugin.get('devicesV4', { cl: 'ActorD,ActorA' }).then(devicelist => {
       if (reload) vc.delCommands({ devices: 1 });
-      const dups = vc.addDevices(devicelist);
+      plugin.log( 'Формировать команды управления устройствами - '+(plugin.params.gendevcmd ? 'Да ' : 'Нет'));
+      plugin.log( 'Формировать команды управления группами устройств - '+(plugin.params.gengroupcmd ? 'Да ' : 'Нет'));
+      const dups = vc.addDevices(devicelist, plugin.params);  // Параметры - опционально генерировать команды
+     
 
       plugin.log('Уникальные команды: ' + vc.getVosmsCommandLen());
       plugin.log('Не уникальные (не включены в словарь): ' + dups.length);
