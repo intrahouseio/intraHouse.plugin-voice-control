@@ -31,37 +31,6 @@ plugin.log(`Verbal Commander has started`);
 plugin.on('error', err => {
   plugin.log('ERROR: ' + util.inspect(err));
 });
-/*
-plugin.params
-  .get()
-  .then(params => {
-    plugin.params = params;
-    plugin.log('Received PARAMS ' + JSON.stringify(params));
-
-    // TODO - здесь НУЖНО получить язык от системы!!!
-    // И список слов по типам устройств для групповых команд!!
-    vc.setLang('ru');
-    return plugin.get('devicesV4', { cl: 'ActorD,ActorA' });
-  })
-  .then(devicelist => {
-    if (devicelist && devicelist.length) {
-      vc.formLists(devicelist);
-      const dups = vc.addFirst(devicelist);
-
-      plugin.log('Уникальные команды: ' + vc.getVosmsCommandLen());
-      plugin.log('Не уникальные (не включены в словарь): ' + dups.length);
-      if (dups.length) plugin.log(util.inspect(dups));
-    }
-    return plugin.get('listfromworkscenes'); // Список сценариев
-  })
-  .then(scenelist => {
-    plugin.log('Интерактивные сценарии: ' + util.inspect(scenelist));
-    vc.addScenes(scenelist);
-  })
-  .catch(e => {
-    plugin.log('ERROR! ' + util.inspect(e));
-  });
-*/
 
 plugin.params
   .get()
@@ -84,9 +53,10 @@ function processParams(params) {
 
 function loadScenes() {
   return new Promise(resolve => {
-    plugin.get('listfromworkscenes').then(scenelist => {
+    plugin.get('pluginextra', { unit: 'voicecontrol' }).then(scenelist => {
       plugin.log('Загрузка сценариев: ' + scenelist.length);
       vc.addScenes(scenelist);
+      // plugin.log('Scenes: '+ util.inspect(vc.getVosmsSceneCommands()));
       resolve();
     });
   });
@@ -101,6 +71,7 @@ function loadDevices(reload) {
       plugin.log('Уникальные команды: ' + vc.getVosmsCommandLen());
       plugin.log('Не уникальные (не включены в словарь): ' + dups.length);
       if (dups.length) plugin.log(util.inspect(dups));
+      plugin.set('channels', vc.getChannels());
       resolve();
     });
   });
@@ -108,7 +79,7 @@ function loadDevices(reload) {
 
 /**
  * Запросы от сервера - обработчик сообщений type:command
- * {type:"command", command:"..."}
+ * {type:"command", command:"фраза содержащая ключевые слова"}
  *
  * Разобрать входящее сообщение
  * Передать команду управления на сервер
@@ -159,12 +130,16 @@ plugin.rooms.onUpdate(() => {
   loadDevices(true);
 });
 
+
 // Изменения в устройстввх - любые (добавление, удаление)
 plugin.onChange('devref',  { cl: 'ActorD,ActorA' }, (data) => {
   plugin.log('Device has updated.'+util.inspect(data));
-  // plugin.log('Device has updated. Rebuild device commands');
-  // Перегенерировать по одному устройству - или устройтсвам, включенным в массив
-  
-
-  
+  loadDevices(true);
 });
+
+
+plugin.onChange('pluginextra',  { unit: 'voicecontrol' }, (data) => {
+  plugin.log('EXT has updated.'+util.inspect(data));
+  loadScenes();
+});
+

@@ -4,6 +4,53 @@
   "module": "index.js",
   "single": 1,
 
-  "params": []
+  "params": [],
+
+  "genrules": {
+    "ActorD": { "cl": "ActorD" },
+    "ActorA": { "cl": "ActorA" }
+  },
+
+
+  "chpattern": [
+    {
+      "name": "scene",
+      "note": "Команда",
+      "type": "STRING",
+      "hardlevel": 1
+    },
+    {
+      "name": "dn",
+      "note": "Устройство",
+      "type": "STRING",
+      "hardlevel": 1
+    },
+    {
+      "name": "words",
+      "note": "Фраза",
+      "type": "STRING",
+      "hardlevel": 1
+    }
+  ],
+
  
+
+  "extrapattern": [
+    {
+      "name": "name",
+      "note": "Фраза",
+      "type": "string"
+    },
+    {
+      "name": "scene",
+      "note": "Сценарий",
+      "type": "autocomplete",
+      "data": "listfromworkscenes"
+    }
+  ],
+
+  "extradefault": {
+    "scene": "",
+    "name": "Сделай.."
+  }
 }
