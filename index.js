@@ -51,9 +51,11 @@ function processParams(params) {
   vc.setLang(params.lang || 'ru');
 }
 
-function loadScenes() {
+function loadScenes(reload) {
   return new Promise(resolve => {
     plugin.get('pluginextra', { unit: 'voicecontrol' }).then(scenelist => {
+      if (reload) vc.delCommands({ scenes: 1 });
+
       plugin.log('Загрузка сценариев: ' + scenelist.length);
       vc.addScenes(scenelist);
       // plugin.log('Scenes: '+ util.inspect(vc.getVosmsSceneCommands()));
@@ -140,6 +142,6 @@ plugin.onChange('devref',  { cl: 'ActorD,ActorA' }, (data) => {
 
 plugin.onChange('pluginextra',  { unit: 'voicecontrol' }, (data) => {
   plugin.log('EXT has updated.'+util.inspect(data));
-  loadScenes();
+  loadScenes(true);
 });
 
