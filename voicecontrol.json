@@ -12,10 +12,41 @@
       "val": true
     },
     {
+      "name": "subsdevcmd",
+      "note": "$subsdevcmd",
+      "type": "sdroplist",
+      "data": {"tablename":"subsystems"},
+      "val":"",
+      "visible":"data.gendevcmd"
+    },
+    {
       "name": "gengroupcmd",
       "note": "$gengroupcmd",
       "type": "cb",
       "val": true
+    },
+    {
+      "name": "subgroupcmd",
+      "note": "$subgroupcmd",
+      "type": "droplist",
+      "data": "subsystems",
+      "val": "1",
+      "visible":"data.gengroupcmd"
+    },
+    {
+      "name": "typesgroupcmd",
+      "note":  "$typesgroupcmd",
+      "type": "sdroplist",
+      "data": {"tablename":"types"},
+      "val": ["510","520","530"],
+      "visible":"data.gengroupcmd"
+    },
+    {
+      "name": "wordgroupcmd",
+      "note":  "$wordgroupcmd",
+      "type": "string",
+      "val": "$Light",
+      "visible":"data.gengroupcmd"
     }
   ],
 
@@ -51,19 +82,88 @@
   "extrapattern": [
     {
       "name": "name",
-      "note": "Фраза",
+      "note": "$phrase",
       "type": "string"
     },
     {
+      "name": "what",
+      "note": "$what",
+      "type": "droplist",
+      "data":[{"id":"scene", "name":"$scene"}, {"id":"devcmd", "name":"$devcmd"}, {"id":"group", "name":"$group"} ]
+    },
+    {
       "name": "scene",
-      "note": "Сценарий",
+      "note": "$scene",
       "type": "autocomplete",
-      "data": "listfromworkscenes"
+      "data": "listfromworkscenes",
+      "visible":"data.what=='scene'"
+    },
+
+    {
+      "name": "arg",
+      "note": "$arg",
+      "type": "STRING",
+      "visible": "(data.what=='scene') && data.scene"
+    },
+
+    {
+      "name": "act",
+      "note": "$act",
+      "type": "droplist",
+      "data":[{"id":"on", "name":"$on"}, {"id":"off", "name":"$off"},{"id":"toggle", "name":"$toggle"}, {"id":"aon", "name":"$aon"}, {"id":"aoff", "name":"$aoff"}],
+      "visible":"data.what=='devcmd' || data.what=='group'"
+    },
+
+    {
+      "name": "dn",
+      "note": "$dn",
+      "type": "autocomplete",
+      "data":"devactorlist",
+      "visible":"data.what=='devcmd'"
+    },
+    {
+      "name": "gr_subs",
+      "note": "$Subsystem",
+      "type": "autocomplete",
+      "data":"subsystems",
+      "visible":"data.what=='group'"
+    },
+
+{
+        "name": "gr_place",
+      "note": "$Place",
+      "type": "autocomplete",
+      "data":"places",
+      "visible":"data.what=='group'"
+    },
+{
+      "name": "gr_room",
+      "note": "$Room",
+      "type": "autocomplete",
+      "data":"rooms",
+      "visible":"data.what=='group'"
+    },
+   
+   {
+      "name": "gr_type",
+      "nnote": "$Dev_Type",
+      "type": "autocomplete",
+      "data": "types",
+      "visible":"data.what=='group'"
     }
   ],
 
   "extradefault": {
+    "name": "Сделай..",
+    "what":"",
     "scene": "",
-    "name": "Сделай.."
+    "arg": "",
+    "act": "",
+    "dn": "",
+    "gr_subs":"",
+    "gr_place":"",
+    "gr_room":"",
+    "gr_type":""
+
   }
 }

@@ -1,5 +1,33 @@
 {
     "gendevcmd":"Generate device control commands",
-    "gengroupcmd":"Generate device group control commands"
+    "gengroupcmd":"Generate device group control commands",
+    
+    "subsdevcmd":"For subsystems",
+   
+    "subgroupcmd":"For subsystem",
+    "typesgroupcmd":"For devices",
+    "wordgroupcmd":"Group keyword",
+    "Light":"Light",
+    "yes":"Yes",
+    "no":"No",
+    "NotUnique":"Not unique Commands",
+
+    "scene":"Script",
+    "arg":"Script args",
+    "devcmd":"Device Command",
+    "group":"Group Command",
+    "phrase":"Phrase",
+    "what":"What to do",
+    "act":"Action",
+    "dn":"Device",
+    "Subsystem":"Subsystem",
+    "Place":"Level",
+    "Room":"Zone",
+    "Dev_Type":"Device type",
+    "on":"Turn on",
+    "off":"Turn off",
+    "toggle":"Toggle",
+    "aon":"Turn on save auto",
+    "aoff":"Turn off save auto"
     
 }
