@@ -100,17 +100,10 @@
     },
 
     {
-      "name": "arg",
-      "note": "$arg",
-      "type": "STRING",
-      "visible": "(data.what=='scene') && data.scene"
-    },
-
-    {
       "name": "act",
       "note": "$act",
       "type": "droplist",
-      "data":[{"id":"on", "name":"$on"}, {"id":"off", "name":"$off"},{"id":"toggle", "name":"$toggle"}, {"id":"aon", "name":"$aon"}, {"id":"aoff", "name":"$aoff"}],
+      "data":[{"id":"on", "name":"$on"}, {"id":"off", "name":"$off"},{"id":"toggle", "name":"$toggle"}, {"id":"aon", "name":"$aon"}, {"id":"aoff", "name":"$aoff"},{"id":"set", "name":"$set"}, {"id":"set+", "name":"$set+"}, {"id":"set-", "name":"$set-"}],
       "visible":"data.what=='devcmd' || data.what=='group'"
     },
 
@@ -120,6 +113,12 @@
       "type": "autocomplete",
       "data":"devactorlist",
       "visible":"data.what=='devcmd'"
+    },
+    {
+      "name": "value",
+      "note": "$Value",
+      "type": "string",
+      "visible":"data.what=='devcmd' && (data.act=='set' || data.act=='set+' || data.act=='set-)'"
     },
     {
       "name": "gr_subs",
@@ -160,6 +159,7 @@
     "arg": "",
     "act": "",
     "dn": "",
+    "value": "",
     "gr_subs":"",
     "gr_place":"",
     "gr_room":"",

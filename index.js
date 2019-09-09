@@ -64,7 +64,7 @@ function loadExtra(reload) {
 
       plugin.log('Uploaded ext commands: ' + scenelist.length);
       vc.addExt(scenelist);
-      plugin.log('Ext: '+ util.inspect(vc.getVosmsExtCommands()));
+      // plugin.log('Ext: '+ util.inspect(vc.getVosmsExtCommands()));
       resolve();
     });
   });
@@ -113,10 +113,11 @@ plugin.onCommand(message => {
       plugin.startscene(result.scen, '', sender);
     } else {
       const arr = result.scen.split('.');
+      const value = result.value;
       if (arr[0] == 'ALL') {
-        plugin.do(result.filter, arr[1], '', sender);
+        plugin.do(result.filter, arr[1], value, sender);
       } else {
-        plugin.do(arr[0], arr[1], '', sender);
+        plugin.do(arr[0], arr[1], value, sender);
       }
     }
 

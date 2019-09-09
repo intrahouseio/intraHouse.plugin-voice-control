@@ -28,6 +28,10 @@
     "off":"Turn off",
     "toggle":"Toggle",
     "aon":"Turn on save auto",
-    "aoff":"Turn off save auto"
+    "aoff":"Turn off save auto",
+    "Value":"Value",
+    "set":"Set value",
+    "set+":"Increase, use value as step",
+    "set-":"Decrease, use value as step"
     
 }
