@@ -32,7 +32,7 @@ const util = require('util');
 const plugin = require('ih-plugin-api')();
 const vc = require('./lib/vosmscmd')();
 
-plugin.log(`Verbal Commander has started`);
+plugin.log(`Voice Control has started`);
 
 plugin.on('error', err => {
   plugin.log('ERROR: ' + util.inspect(err));
@@ -78,9 +78,6 @@ function loadDevices(reload) {
       plugin.log( vc.getMessage('gengroupcmd')+' - '+(plugin.params.gengroupcmd ? vc.getMessage('yes') : vc.getMessage('no')));
       const dups = vc.addDevices(devicelist, plugin.params);  // Параметры - опционально генерировать команды
      
-      // plugin.log('Dev: '+ util.inspect(vc.getVosmsDevCommands()));
-
-      // plugin.log('Уникальные команды: ' + vc.getVosmsCommandLen());
       plugin.log(vc.getMessage('NotUnique')+' : ' + dups.length);
       if (dups.length) plugin.log(util.inspect(dups));
       plugin.set('channels', vc.getChannels());
@@ -102,8 +99,8 @@ plugin.onCommand(message => {
     throw { message: 'Unknown command in message:' + util.inspect(message) + ' Expected string!' };
   }
 
-  plugin.log('get mess:'+util.inspect(message));
-  const sender = {login: message.login ? message.login+'voicecontrol' :  'voicecontrol'};
+  // plugin.log('get mess:'+util.inspect(message));
+  const sender = {login: message.login ? message.login+'/voicecontrol' :  'voicecontrol'};
 
   
   const result = vc.getActionAndAnswer(message.command);
