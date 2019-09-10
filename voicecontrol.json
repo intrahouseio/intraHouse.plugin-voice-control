@@ -118,7 +118,7 @@
       "name": "value",
       "note": "$Value",
       "type": "string",
-      "visible":"data.what=='devcmd' && (data.act=='set' || data.act=='set+' || data.act=='set-)'"
+      "visible":"data.what=='devcmd' && data.act && (data.act.substr(0,3)=='set')"
     },
     {
       "name": "gr_subs",
